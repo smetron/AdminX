@@ -1,0 +1,42 @@
+﻿@page "/"
+@inject IHttpContextAccessor HttpContextAccessor
+
+@* @attribute [AllowAnonymous] *@
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<h2>IP Address @ipAddress</h2>
+
+<ul>
+    @foreach (var item in headers)
+    {
+        <li><strong>@item.Key</strong> <span>@item.Value</span></li>
+    }
+</ul>
+
+
+Welcome to your new app.
+
+@code {
+    string ipAddress = string.Empty;
+    Dictionary<string, string> headers = new Dictionary<string, string>();
+
+    protected override void OnInitialized()
+    {
+        ipAddress = HttpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+
+        var httpHeader = HttpContextAccessor.HttpContext?.Request?.Headers;
+        if(httpHeader != null)
+        {
+            foreach(var header in httpHeader)
+            {
+                Console.WriteLine($"{header.Key}: {header.Value}");
+                headers.Add(header.Key, header.Value);
+            }
+        }
+
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,20 @@
+﻿@page "/total-transactions"
+
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
+
+<PageTitle>Auth</PageTitle>
+
+<h1>You are authenticated</h1>
+
+<AuthorizeView>
+    @if (@context.User.Identity?.Name.ToLower() == "admin")
+    {
+        <p>Your the admin</p>
+    }
+
+    Hello @context.User.Identity?.Name
+</AuthorizeView>
+
+
